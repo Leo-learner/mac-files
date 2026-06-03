@@ -1,0 +1,29 @@
+{
+  "name": "mac-files",
+  "version": "1.0.0",
+  "description": "A protected local web file manager for macOS.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node --check server.js && node --check auth.js && node --check db.js && node --check routes/finder.js && node --check scripts/smoke-startup.js && node --check scripts/smoke-auth.js && node scripts/check-css.js",
+    "smoke:startup": "node scripts/smoke-startup.js",
+    "smoke:auth": "node scripts/smoke-auth.js"
+  },
+  "keywords": [
+    "macos",
+    "files",
+    "finder",
+    "express"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.6.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "iconv-lite": "^0.7.2",
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^10.0.0"
+  }
+}

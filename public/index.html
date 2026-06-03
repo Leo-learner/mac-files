@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mac Files</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body data-app="files">
+  <main class="shell">
+    <section id="authView" class="auth-card">
+      <p class="kicker">Protected macOS tool</p>
+      <h1>Mac Files</h1>
+      <p class="muted">Sign in with an admin account to browse and manage files inside the configured root.</p>
+      <div class="auth-grid">
+        <input id="username" autocomplete="username" placeholder="Username">
+        <input id="email" autocomplete="email" placeholder="Email for first registration">
+        <input id="password" type="password" autocomplete="current-password" placeholder="Password">
+      </div>
+      <div class="actions">
+        <button id="loginBtn" class="primary">Sign in</button>
+        <button id="registerBtn">Create account</button>
+      </div>
+      <div id="authError" class="error" role="alert"></div>
+    </section>
+
+    <section id="appView" class="app hidden">
+      <header class="topbar">
+        <div>
+          <p class="kicker">Admin console</p>
+          <h1>Files</h1>
+        </div>
+        <div class="top-actions">
+          <span id="pathLabel" class="pill">/</span>
+          <span id="userLabel" class="pill"></span>
+          <button id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <section class="panel">
+        <div class="toolbar">
+          <button id="upBtn">Up</button>
+          <button id="refreshBtn">Refresh</button>
+          <button id="selectAllBtn">Select all</button>
+          <button id="pasteBtn" disabled>Paste</button>
+          <button id="uploadBtn">Upload</button>
+          <button id="newFolderBtn" class="primary">New folder</button>
+          <input id="searchInput" placeholder="Search current folder...">
+          <input id="uploadInput" type="file" multiple hidden>
+        </div>
+        <div id="breadcrumbs" class="breadcrumbs"></div>
+        <div id="summary" class="muted"></div>
+        <div id="selectionBar" class="selection hidden">
+          <strong id="selectionCount">0 selected</strong>
+          <div class="actions">
+            <button id="downloadBtn">Download</button>
+            <button id="copyBtn">Copy</button>
+            <button id="cutBtn">Cut</button>
+            <button id="renameBtn" disabled>Rename</button>
+            <button id="deleteBtn" class="danger">Delete</button>
+            <button id="clearBtn">Clear</button>
+          </div>
+        </div>
+        <div id="list" class="file-list"></div>
+        <div id="empty" class="empty hidden">No files found.</div>
+      </section>
+
+      <section id="previewPanel" class="panel hidden">
+        <div class="section-head">
+          <h2 id="previewTitle">Preview</h2>
+          <button id="closePreviewBtn">Close</button>
+        </div>
+        <pre id="previewContent" class="terminal-output"></pre>
+      </section>
+    </section>
+  </main>
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
