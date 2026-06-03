@@ -25,7 +25,7 @@ body {
     linear-gradient(145deg, #070b12, #111827 58%, #05070b);
 }
 
-button, input {
+button, input, select {
   font: inherit;
 }
 
@@ -55,7 +55,7 @@ button:disabled {
   font-weight: 800;
 }
 
-input {
+input, select {
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -65,7 +65,7 @@ input {
   outline: none;
 }
 
-input:focus {
+input:focus, select:focus {
   border-color: rgba(139, 233, 192, .55);
   box-shadow: 0 0 0 4px rgba(139, 233, 192, .10);
 }
@@ -291,6 +291,49 @@ input[type="range"] {
   padding: 7px 11px;
 }
 
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.config-field,
+.secret-row {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .045);
+}
+
+.config-field label,
+.secret-row label {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.config-field small,
+.secret-row small {
+  color: var(--muted);
+}
+
+.config-secrets {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.secret-row {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.secret-row input {
+  width: auto;
+}
+
 .terminal-panel {
   min-height: 640px;
   display: grid;
@@ -366,6 +409,9 @@ input[type="range"] {
     min-height: calc(100vh - 190px);
   }
   .grid {
+    grid-template-columns: 1fr;
+  }
+  .config-grid {
     grid-template-columns: 1fr;
   }
   .toolbar,

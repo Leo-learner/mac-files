@@ -18,6 +18,16 @@ Mac Files is a small protected local web file manager for macOS. It was split ou
 
 ## Setup
 
+One-command local deployment:
+
+```bash
+./deploy.sh
+```
+
+This installs Node dependencies, creates a local `.env` with a generated `JWT_SECRET` when needed, runs checks, and starts the app.
+
+Manual setup:
+
 ```bash
 npm install
 cp .env.example .env
@@ -36,6 +46,12 @@ npm start
 ```
 
 Open `http://localhost:3302`, create the admin account, then sign in.
+
+## Configuration Panel
+
+After signing in as admin, open **Settings** from the top bar. The panel can edit local deployment settings such as port, admin username, database path, allowed origins, and `FINDER_ROOT`.
+
+Secrets are never displayed in the browser. Use the rotate checkbox to generate a new `JWT_SECRET`. Restart the app after saving server-level settings.
 
 ## Security Notes
 

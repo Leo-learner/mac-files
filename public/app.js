@@ -33,6 +33,51 @@ async function api(path, options = {}) {
   return data;
 }
 
+function renderConfig(config) {
+  const fieldsEl = $('configFields');
+  const secretsEl = $('configSecrets');
+  $('configPath').textContent = config.envExists ? config.envPath : `${config.envPath} will be created`;
+  fieldsEl.innerHTML = config.fields.map(field => {
+    const value = escapeHtml(field.value || '');
+    const control = field.type === 'boolean'
+      ? `<select data-config-key="${field.key}"><option value="true" ${field.value === 'true' ? 'selected' : ''}>true</option><option value="false" ${field.value !== 'true' ? 'selected' : ''}>false</option></select>`
+      : `<input data-config-key="${field.key}" type="${field.type === 'number' ? 'number' : 'text'}" value="${value}">`;
+    return `<div class="config-field">
+      <label>${escapeHtml(field.label)}</label>
+      ${control}
+      <small>${field.key}${field.restart ? ' · restart required' : ''}</small>
+    </div>`;
+  }).join('');
+  secretsEl.innerHTML = config.secrets.map(secret => `<div class="secret-row">
+    <div>
+      <label>${escapeHtml(secret.key)}</label>
+      <small>${escapeHtml(secret.masked)} · value is never shown</small>
+    </div>
+    <label><input type="checkbox" data-rotate-secret="${escapeHtml(secret.key)}"> rotate</label>
+  </div>`).join('');
+}
+
+async function openConfigPanel() {
+  $('configPanel').classList.remove('hidden');
+  const config = await api('/api/config');
+  renderConfig(config);
+}
+
+function closeConfigPanel() {
+  $('configPanel').classList.add('hidden');
+}
+
+async function saveConfigPanel() {
+  const fields = {};
+  document.querySelectorAll('[data-config-key]').forEach(input => {
+    fields[input.dataset.configKey] = input.value;
+  });
+  const rotateSecrets = [...document.querySelectorAll('[data-rotate-secret]:checked')].map(input => input.dataset.rotateSecret);
+  const config = await api('/api/config', { method: 'POST', body: { fields, rotateSecrets } });
+  renderConfig(config);
+  toast('Settings saved. Restart to apply server-level changes.');
+}
+
 function showApp(user) {
   state.user = user;
   $('authView').classList.add('hidden');
@@ -158,6 +203,9 @@ async function downloadSelected() {
 $('loginBtn').addEventListener('click', () => login(false));
 $('registerBtn').addEventListener('click', () => login(true));
 $('logoutBtn').addEventListener('click', showAuth);
+$('settingsBtn').addEventListener('click', () => openConfigPanel().catch(err => toast(err.message)));
+$('closeConfigBtn').addEventListener('click', closeConfigPanel);
+$('saveConfigBtn').addEventListener('click', () => saveConfigPanel().catch(err => toast(err.message)));
 $('refreshBtn').addEventListener('click', () => loadFiles());
 $('upBtn').addEventListener('click', () => loadFiles(state.parent || ''));
 $('selectAllBtn').addEventListener('click', () => {

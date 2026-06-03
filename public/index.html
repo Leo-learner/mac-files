@@ -33,9 +33,26 @@
         <div class="top-actions">
           <span id="pathLabel" class="pill">/</span>
           <span id="userLabel" class="pill"></span>
+          <button id="settingsBtn">Settings</button>
           <button id="logoutBtn">Log out</button>
         </div>
       </header>
+
+      <section id="configPanel" class="panel hidden">
+        <div class="section-head">
+          <div>
+            <h2>Deployment settings</h2>
+            <p class="muted">Edit local configuration. Restart the app after saving restart-required values.</p>
+          </div>
+          <button id="closeConfigBtn">Close</button>
+        </div>
+        <div id="configFields" class="config-grid"></div>
+        <div id="configSecrets" class="config-secrets"></div>
+        <div class="actions">
+          <button id="saveConfigBtn" class="primary">Save settings</button>
+          <span id="configPath" class="muted"></span>
+        </div>
+      </section>
 
       <section class="panel">
         <div class="toolbar">

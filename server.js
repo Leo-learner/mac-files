@@ -4,12 +4,14 @@ const express = require('express');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const { v4: uuid } = require('uuid');
-const { signToken, authRequired } = require('./auth');
+const { signToken, authRequired, adminOnly } = require('./auth');
 const { DB_PATH, userQueries } = require('./db');
 const { createLogger } = require('./lib/logger');
 const finderRoutes = require('./routes/finder');
+const { getConfig, saveConfig } = require('./config-panel');
 
 const app = express();
+const PROJECT_NAME = 'mac-files';
 const PORT = Number(process.env.PORT || 3302);
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'Leo';
 
@@ -98,6 +100,18 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/auth/me', authRequired, (req, res) => {
   res.json({ user: req.user });
+});
+
+app.get('/api/config', authRequired, adminOnly, (req, res) => {
+  res.json(getConfig(PROJECT_NAME));
+});
+
+app.post('/api/config', authRequired, adminOnly, (req, res) => {
+  try {
+    res.json(saveConfig(PROJECT_NAME, req.body));
+  } catch (err) {
+    res.status(400).json({ error: err.message || 'Failed to save configuration' });
+  }
 });
 
 app.use('/api/finder', finderRoutes);
